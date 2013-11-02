@@ -1,0 +1,4 @@
+site :opscode
+
+cookbook 'homebrew', '>= 1.5.0'
+cookbook 'apt', '>= 2.3.0'

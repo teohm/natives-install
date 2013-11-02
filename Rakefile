@@ -17,8 +17,8 @@ Jeweler::Tasks.new do |gem|
   gem.name = "natives"
   gem.homepage = "http://github.com/teohm/natives"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = %Q{Install libraries required by rubygems' native extension.}
+  gem.description = %Q{Automate libraries installation required by rubygems' native extension.}
   gem.email = "teohuiming@gmail.com"
   gem.authors = ["Huiming Teo"]
   # dependencies defined in Gemfile
