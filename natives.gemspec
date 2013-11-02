@@ -64,6 +64,7 @@ Gem::Specification.new do |s|
     "lib/natives.rb",
     "lib/natives/app.rb",
     "lib/natives/cli.rb",
+    "natives.gemspec",
     "spec/natives/app_spec.rb",
     "spec/spec_helper.rb"
   ]
