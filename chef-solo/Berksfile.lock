@@ -1,0 +1,10 @@
+{
+  "sources": {
+    "homebrew": {
+      "locked_version": "1.5.0"
+    },
+    "apt": {
+      "locked_version": "2.3.0"
+    }
+  }
+}
