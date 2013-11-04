@@ -1,6 +1,6 @@
 # natives
 
-Installs native library packages required by Ruby gems (normally with native extensions) on your machine. 
+Installs native library packages required by Ruby gems on your machine.
 
 It uses the [multi-platform catalog](https://github.com/teohm/natives-catalog/blob/master/catalogs/rubygems.yaml) maintained by [natives-catalog](https://github.com/teohm/natives-catalog) project.
 
@@ -10,13 +10,13 @@ It uses the [multi-platform catalog](https://github.com/teohm/natives-catalog/bl
 gem install natives
 ```
 
-## Run
-``` 
+## Use
+```
 natives install curb capybara-webkit nokogiri sqlite3
 ```
-It will try to install native packages required by the following gems: curb, capybara-webkit, nokogiri, sqlite.
+It will install native packages required by the following gems: curb, capybara-webkit, nokogiri, sqlite.
 
-### Multi-catalog support
+### Switch catalog
 
 ```
 natives install --catalog npm sqlite3
@@ -37,8 +37,7 @@ gem update natives-catalog
 
 ### Project-specific
 
-It also looks for a `natives-catalog` directory in current working directory, and loads any YAML catalog files in the directory.
-
+It also looks for a `natives-catalog/` directory in current working directory, and loads any YAML catalog files in the directory.
 
 
 ## Contributing to natives
