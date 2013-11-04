@@ -5,7 +5,8 @@ require 'chef/application/solo'
 module Natives
   class App
     def install(catalog_name, packages)
-      create_tmp_attrs_file(catalog_name.to_s, Array(packages)) do |attrs_file|
+      create_solo_json_tempfile(catalog_name.to_s,
+                                Array(packages)) do |attrs_file|
         run_chef_solo(attrs_file)
       end
     end
@@ -13,7 +14,7 @@ module Natives
     def run_chef_solo(json_attrs_file)
       ARGV.clear
       [
-        '-c', File.join(gem_base_path, 'chef-solo', 'config.rb'),
+        '-c', File.join(gem_base_path, 'chef', 'solo.rb'),
         '-o', 'natives',
         '-j', json_attrs_file.to_path
       ].each do |token|
@@ -22,7 +23,7 @@ module Natives
       Chef::Application::Solo.new.run
     end
 
-    def create_tmp_attrs_file(catalog_name, packages, &block)
+    def create_solo_json_tempfile(catalog_name, packages, &block)
       file = Tempfile.new('natives.temp_attrs_file')
       file.write(json_attrs(catalog_name, packages))
       file.flush

@@ -7,26 +7,28 @@ describe Natives::App do
 
     it "forces packages argument to be an Array" do
       app.should_receive(:run_chef_solo)
-      app.should_receive(:create_tmp_attrs_file).with("foo", []).and_call_original
+      app.should_receive(:create_solo_json_tempfile).with("foo", []).
+        and_call_original
 
       app.install("foo", nil)
     end
 
     it "forces catalog_name to be a String" do
       app.should_receive(:run_chef_solo)
-      app.should_receive(:create_tmp_attrs_file).with("", []).and_call_original
+      app.should_receive(:create_solo_json_tempfile).with("", []).
+        and_call_original
 
       app.install(nil, nil)
 
     end
   end
 
-  describe "#create_tmp_attrs_file" do
+  describe "#create_solo_json_tempfile" do
     let(:app) { Natives::App.new }
 
     it "generates a valid solo.json file" do
       json = nil
-      app.create_tmp_attrs_file('rubygems', ['foo', 'bar']) do |file|
+      app.create_solo_json_tempfile('rubygems', ['foo', 'bar']) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -43,7 +45,7 @@ describe Natives::App do
 
     it "generates solo.json file based on the given catalog name" do
       json = nil
-      app.create_tmp_attrs_file('npm', ['foo', 'bar']) do |file|
+      app.create_solo_json_tempfile('npm', ['foo', 'bar']) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -60,7 +62,7 @@ describe Natives::App do
 
     it "handles empty package list" do
       json = nil
-      app.create_tmp_attrs_file('rubygems', []) do |file|
+      app.create_solo_json_tempfile('rubygems', []) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -91,7 +93,7 @@ describe Natives::App do
       expect(ARGV).to eq([
         '-c',
         File.absolute_path(File.join(
-          File.dirname(__FILE__), '..', '..', 'chef-solo', 'config.rb')),
+          File.dirname(__FILE__), '..', '..', 'chef', 'solo.rb')),
         '-o', 'natives',
         '-j', '/path/to/attrs_file'
       ])
