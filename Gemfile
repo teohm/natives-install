@@ -2,7 +2,7 @@ source "http://rubygems.org"
 # Add dependencies required to use your gem here.
 
 gem "chef", ">= 11.6.2"
-gem "natives-catalog", ">= 0.3.1"
+gem "natives-catalog", ">= 0.3.2"
 gem "thor"
 
 # Add dependencies to develop your gem here.
