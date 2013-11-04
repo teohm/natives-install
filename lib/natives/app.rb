@@ -36,6 +36,10 @@ module Natives
 
     protected
 
+    def current_working_dir
+      Dir.pwd
+    end
+
     def gem_base_path
       File.absolute_path(File.join(File.dirname(__FILE__), '..', '..'))
     end
@@ -45,6 +49,9 @@ module Natives
         "natives" => {
           "install_list" => {
             "rubygems" => packages
+          },
+          "config" => {
+            "working_dir" => current_working_dir
           }
         }
       }.to_json

@@ -25,6 +25,9 @@ describe Natives::App do
         "natives" => {
           "install_list" => {
             "rubygems" => ["foo", "bar"]
+          },
+          "config" => {
+            "working_dir" => Dir.pwd
           }
         }
       })
@@ -39,7 +42,11 @@ describe Natives::App do
         "natives" => {
           "install_list" => {
             "rubygems" => []
+          },
+          "config" => {
+            "working_dir" => Dir.pwd
           }
+
         }
       })
     end
