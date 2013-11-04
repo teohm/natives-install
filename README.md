@@ -16,6 +16,12 @@ natives install curb capybara-webkit nokogiri sqlite3
 ```
 It will try to install native packages required by the following gems: curb, capybara-webkit, nokogiri, sqlite.
 
+### Multi-catalog support
+
+```
+natives install --catalog npm sqlite3
+```
+By default, it uses `rubygems` catalog, but it's easy to tell `natives` to use another catalog.
 
 ## Catalogs
 

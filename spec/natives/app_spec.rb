@@ -7,18 +7,26 @@ describe Natives::App do
 
     it "forces packages argument to be an Array" do
       app.should_receive(:run_chef_solo)
-      app.should_receive(:create_tmp_attrs_file).with([]).and_call_original
+      app.should_receive(:create_tmp_attrs_file).with("foo", []).and_call_original
 
-      app.install(nil)
+      app.install("foo", nil)
+    end
+
+    it "forces catalog_name to be a String" do
+      app.should_receive(:run_chef_solo)
+      app.should_receive(:create_tmp_attrs_file).with("", []).and_call_original
+
+      app.install(nil, nil)
+
     end
   end
 
   describe "#create_tmp_attrs_file" do
     let(:app) { Natives::App.new }
 
-    it "generates a valid Chef JSON attrs file" do
+    it "generates a valid solo.json file" do
       json = nil
-      app.create_tmp_attrs_file(['foo', 'bar']) do |file|
+      app.create_tmp_attrs_file('rubygems', ['foo', 'bar']) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -33,9 +41,26 @@ describe Natives::App do
       })
     end
 
+    it "generates solo.json file based on the given catalog name" do
+      json = nil
+      app.create_tmp_attrs_file('npm', ['foo', 'bar']) do |file|
+        json = JSON.parse(file.read)
+      end
+      expect(json).to eq({
+        "natives" => {
+          "install_list" => {
+            "npm" => ["foo", "bar"]
+          },
+          "config" => {
+            "working_dir" => Dir.pwd
+          }
+        }
+      })
+    end
+
     it "handles empty package list" do
       json = nil
-      app.create_tmp_attrs_file([]) do |file|
+      app.create_tmp_attrs_file('rubygems', []) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
