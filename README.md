@@ -2,7 +2,7 @@
 
 Installs native library packages required by Ruby gems (normally with native extensions) on your machine. 
 
-It uses multi-platform catalogs maintained by [natives-catalog](https://github.com/teohm/natives-catalog) project.
+It uses the [multi-platform catalog](https://github.com/teohm/natives-catalog/blob/master/catalogs/rubygems.yaml) maintained by [natives-catalog](https://github.com/teohm/natives-catalog) project.
 
 ## Install
 
@@ -21,7 +21,7 @@ It will try to install native packages required by the following gems: curb, cap
 
 ### System-wide
 
-By default, it uses the catalogs shipped with [natives-catalog](https://github.com/teohm/natives-catalog) gem.
+By default, it uses [the catalog](https://github.com/teohm/natives-catalog/blob/master/catalogs/rubygems.yaml) shipped with [natives-catalog](https://github.com/teohm/natives-catalog) gem.
 
 To update the catalogs:
 
