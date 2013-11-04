@@ -20,7 +20,7 @@ natives_install_list.each do |catalog_name, entries|
     working_dir: node['natives']['config']['working_dir']
   )
 
-  packages = catalog.native_packages_for(entries.first)
+  packages = catalog.native_packages_for(entries)
   packages.each do |package_name|
     package package_name do
       action :install
