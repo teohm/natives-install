@@ -51,7 +51,7 @@ module Natives
           "install_list" => {
             catalog_name => packages
           },
-          "config" => {
+          "configs" => {
             "working_dir" => current_working_dir
           }
         }

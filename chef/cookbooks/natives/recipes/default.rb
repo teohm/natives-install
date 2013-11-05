@@ -17,7 +17,7 @@ natives_install_list.each do |catalog_name, entries|
     catalog_name,
     node[:platform], node[:platform_version],
     current_package_provider,
-    working_dir: node['natives']['config']['working_dir']
+    working_dir: node['natives']['configs']['working_dir']
   )
 
   packages = catalog.native_packages_for(entries)
