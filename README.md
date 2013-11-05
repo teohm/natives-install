@@ -18,10 +18,13 @@ It will lookup and install native packages (e.g. curl, qt, sqlite) required by t
 
 
 ### Have a Gemfile?
-If current working directory has a Gemfile, `natives install` will automatically use the gems specified in the Gemfile.
+If your working directory has a Gemfile, `natives install` will automatically use gems specified in the Gemfile.
 
 ```
 natives install
+natives # runs 'install' task by default
+
+natives install --gemfile=Gemfile.special
 natives install --gemfile=path/to/Gemfile.special
 ```
 
