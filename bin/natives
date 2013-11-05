@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby
+#!/usr/bin/env ruby -W0
+# encoding: UTF-8
 
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 
