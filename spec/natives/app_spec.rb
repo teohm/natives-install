@@ -7,7 +7,8 @@ describe Natives::App do
 
     it "forces packages argument to be an Array" do
       app.should_receive(:run_chef_solo)
-      app.should_receive(:create_solo_json_tempfile).with("foo", []).
+      app.should_receive(:create_solo_json_tempfile).
+        with("foo", [], app.default_configs).
         and_call_original
 
       app.install("foo", nil)
@@ -15,11 +16,29 @@ describe Natives::App do
 
     it "forces catalog_name to be a String" do
       app.should_receive(:run_chef_solo)
-      app.should_receive(:create_solo_json_tempfile).with("", []).
+      app.should_receive(:create_solo_json_tempfile).
+        with("", ['foo', 'bar'], app.default_configs).
         and_call_original
 
-      app.install(nil, nil)
+      app.install(nil, ['foo', 'bar'])
+    end
 
+    it "merges configs with default configs" do
+      app.should_receive(:run_chef_solo)
+      app.should_receive(:create_solo_json_tempfile).
+        with("foobar", ['foo', 'bar'], app.default_configs.merge({foo: false})).
+        and_call_original
+
+      app.install('foobar', ['foo', 'bar'], {foo: false})
+    end
+
+    it "treats nil configs as empty hash" do
+      app.should_receive(:run_chef_solo)
+      app.should_receive(:create_solo_json_tempfile).
+        with("foobar", ['foo', 'bar'], app.default_configs).
+        and_call_original
+
+      app.install('foobar', ['foo', 'bar'], nil)
     end
   end
 
@@ -28,7 +47,10 @@ describe Natives::App do
 
     it "generates a valid solo.json file" do
       json = nil
-      app.create_solo_json_tempfile('rubygems', ['foo', 'bar']) do |file|
+      app.create_solo_json_tempfile(
+        'rubygems',
+        ['foo', 'bar'],
+        {working_dir: '/path/to/working_dir'}) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -37,7 +59,7 @@ describe Natives::App do
             "rubygems" => ["foo", "bar"]
           },
           "configs" => {
-            "working_dir" => Dir.pwd
+            "working_dir" => '/path/to/working_dir'
           }
         }
       })
@@ -45,7 +67,9 @@ describe Natives::App do
 
     it "generates solo.json file based on the given catalog name" do
       json = nil
-      app.create_solo_json_tempfile('npm', ['foo', 'bar']) do |file|
+      app.create_solo_json_tempfile(
+        'npm', ['foo', 'bar'],
+        {working_dir: '/path/to/foo'}) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -54,7 +78,7 @@ describe Natives::App do
             "npm" => ["foo", "bar"]
           },
           "configs" => {
-            "working_dir" => Dir.pwd
+            "working_dir" => '/path/to/foo'
           }
         }
       })
@@ -62,7 +86,7 @@ describe Natives::App do
 
     it "handles empty package list" do
       json = nil
-      app.create_solo_json_tempfile('rubygems', []) do |file|
+      app.create_solo_json_tempfile('rubygems', [], {}) do |file|
         json = JSON.parse(file.read)
       end
       expect(json).to eq({
@@ -71,7 +95,6 @@ describe Natives::App do
             "rubygems" => []
           },
           "configs" => {
-            "working_dir" => Dir.pwd
           }
 
         }

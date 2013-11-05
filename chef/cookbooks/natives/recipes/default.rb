@@ -9,8 +9,10 @@
 
 require 'natives/catalog'
 
-include_recipe 'homebrew' if use_homebrew?
-include_recipe 'apt' if use_apt?
+if node['natives']['configs']['update_provider']
+  include_recipe('homebrew') if use_homebrew?
+  include_recipe('apt') if use_apt?
+end
 
 natives_install_list.each do |catalog_name, entries|
   catalog = Natives::Catalog.new(
@@ -19,8 +21,8 @@ natives_install_list.each do |catalog_name, entries|
     current_package_provider,
     working_dir: node['natives']['configs']['working_dir']
   )
-
   packages = catalog.native_packages_for(entries)
+
   packages.each do |package_name|
     package package_name do
       action :install

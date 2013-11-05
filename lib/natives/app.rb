@@ -4,9 +4,13 @@ require 'chef/application/solo'
 
 module Natives
   class App
-    def install(catalog_name, packages)
-      create_solo_json_tempfile(catalog_name.to_s,
-                                Array(packages)) do |attrs_file|
+    def install(catalog_name, packages, configs={})
+      create_solo_json_tempfile(
+        catalog_name.to_s,
+        Array(packages),
+        default_configs.merge(configs || {})
+
+      ) do |attrs_file|
         run_chef_solo(attrs_file)
       end
     end
@@ -23,9 +27,9 @@ module Natives
       Chef::Application::Solo.new.run
     end
 
-    def create_solo_json_tempfile(catalog_name, packages, &block)
+    def create_solo_json_tempfile(catalog_name, packages, configs, &block)
       file = Tempfile.new('natives.temp_attrs_file')
-      file.write(json_attrs(catalog_name, packages))
+      file.write(json_attrs(catalog_name, packages, configs))
       file.flush
       file.rewind
       begin
@@ -35,6 +39,11 @@ module Natives
       end
     end
 
+    def default_configs
+      {
+        working_dir: current_working_dir
+      }
+    end
     protected
 
     def current_working_dir
@@ -45,15 +54,13 @@ module Natives
       File.absolute_path(File.join(File.dirname(__FILE__), '..', '..'))
     end
 
-    def json_attrs(catalog_name, packages)
+    def json_attrs(catalog_name, packages, configs)
       {
         "natives" => {
           "install_list" => {
             catalog_name => packages
           },
-          "configs" => {
-            "working_dir" => current_working_dir
-          }
+          "configs" => configs
         }
       }.to_json
     end

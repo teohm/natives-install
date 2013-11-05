@@ -1,4 +1,4 @@
-log_level :warn
+log_level :error
 
 base_path = File.absolute_path(File.join(File.dirname(__FILE__)))
 
