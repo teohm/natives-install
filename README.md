@@ -1,5 +1,8 @@
 # natives
 
+[![Gem Version](https://badge.fury.io/rb/natives.png)](http://badge.fury.io/rb/natives)
+[![Code Climate](https://codeclimate.com/github/teohm/natives.png)](https://codeclimate.com/github/teohm/natives)
+
 Installs native library packages required by gems on your machine.
 
 It lookups native packages from a [multi-platform  catalog](https://github.com/teohm/natives-catalog/blob/master/catalogs/rubygems.yaml) maintained by [natives-catalog](https://github.com/teohm/natives-catalog) project.
