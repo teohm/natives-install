@@ -6,6 +6,11 @@ module Natives
   class Cli < Thor
     default_task :install
 
+    desc 'version', 'print the version number'
+    def version
+      puts IO.read('VERSION')
+    end
+
     desc 'install [ENTRY1 ENTRY2 ..]',
          'install native packages required by the catalog entries'
 
