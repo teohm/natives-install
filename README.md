@@ -25,7 +25,7 @@ If your working directory has a Gemfile, `natives install` will automatically us
 
 ```
 natives install
-natives # runs 'install' task by default
+natives  # run 'install' task by default
 
 natives install --gemfile=Gemfile.special
 natives install --gemfile=path/to/Gemfile.special
@@ -37,6 +37,14 @@ natives install --gemfile=path/to/Gemfile.special
 natives install --catalog npm sqlite3
 ```
 By default, it uses `rubygems` catalog, but it's easy to tell `natives` to use another catalog.
+
+### Misc
+
+```
+natives install --test-run  # run without installing native packages
+natives install --update-provider  # update homebrew/apt-get repo first
+natives help
+```
 
 ## Catalogs
 

@@ -19,10 +19,16 @@ module Natives
       aliases: '-u',
       desc: "update package provider's repo (eg. apt-get update)"
 
+    method_option :"test-run", type: 'boolean',
+      default: false,
+      aliases: %w(-t --dry-run),
+      desc: "run without actually installing native packages"
+
     def install(*packages)
       catalog = options[:catalog]
       configs = {
-        update_provider: options['update-provider']
+        update_provider: options['update-provider'],
+        test_run: options['test-run']
       }
       if catalog == 'rubygems' && packages.empty?
         packages = packages_in_gemfile(options[:gemfile])

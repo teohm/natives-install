@@ -5,17 +5,17 @@ require 'chef/application/solo'
 module Natives
   class App
     def install(catalog_name, packages, configs={})
-      create_solo_json_tempfile(
-        catalog_name.to_s,
-        Array(packages),
-        default_configs.merge(configs || {})
+      configs = default_configs.merge(configs || {})
+      why_run = configs.delete(:test_run){ false }
 
+      create_solo_json_tempfile(
+        catalog_name.to_s, Array(packages), configs
       ) do |attrs_file|
-        run_chef_solo(attrs_file)
+        run_chef_solo(attrs_file, why_run)
       end
     end
 
-    def run_chef_solo(json_attrs_file)
+    def run_chef_solo(json_attrs_file, why_run=false)
       ARGV.clear
       [
         '-c', File.join(gem_base_path, 'chef', 'solo.rb'),
@@ -24,6 +24,9 @@ module Natives
       ].each do |token|
         ARGV << token
       end
+
+      ARGV << '-W' if why_run
+
       Chef::Application::Solo.new.run
     end
 

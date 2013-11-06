@@ -40,6 +40,16 @@ describe Natives::App do
 
       app.install('foobar', ['foo', 'bar'], nil)
     end
+
+    it "removes test_run flag from configs and use it when run Chef Solo" do
+      app.should_receive(:run_chef_solo).
+        with(anything, true)
+      app.should_receive(:create_solo_json_tempfile).
+        with("foobar", ['foo', 'bar'], app.default_configs).
+        and_call_original
+
+      app.install('foobar', ['foo', 'bar'], {test_run: true})
+    end
   end
 
   describe "#create_solo_json_tempfile" do
@@ -108,7 +118,6 @@ describe Natives::App do
     it "rewrites ARGV with Chef Solo options and run Chef Solo Application" do
       attrs_file = double()
       attrs_file.stub(:to_path) { '/path/to/attrs_file' }
-
       Chef::Application::Solo.any_instance.should_receive(:run)
 
       app.run_chef_solo(attrs_file)
@@ -120,6 +129,25 @@ describe Natives::App do
         '-o', 'natives',
         '-j', '/path/to/attrs_file'
       ])
+    end
+
+    it "can turn on Chef's --why-run flag" do
+      attrs_file = double()
+      attrs_file.stub(:to_path) { '/path/to/attrs_file' }
+      Chef::Application::Solo.any_instance.should_receive(:run)
+
+      test_run = true
+      app.run_chef_solo(attrs_file, test_run)
+
+      expect(ARGV).to eq([
+        '-c',
+        File.absolute_path(File.join(
+          File.dirname(__FILE__), '..', '..', 'chef', 'solo.rb')),
+        '-o', 'natives',
+        '-j', '/path/to/attrs_file',
+        '-W'
+      ])
+
     end
   end
 end
